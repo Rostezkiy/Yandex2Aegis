@@ -44,4 +44,19 @@
 6. **Импортируйте в Aegis**
    - Откройте Aegis Authenticator → Настройки → Импорт **Plain Text** → Выберите скачанный файл
 
-## 📁 Структура проекта
+---
+
+Ключевые слова для поиска
+конвертер Яндекс Ключ в Aegis
+
+yandex key to aegis converter
+
+импорт 2fa из яндекса в aegis
+
+aegis_import.txt generator
+
+yandex authenticator export converter
+
+локальный конвертер 2fa
+
+otpauth totp конвертер

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Конвертер Яндекс.Ключ → Aegis</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f7fb;
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .card {
+            max-width: 720px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.02);
+            padding: 32px 28px 36px;
+            transition: all 0.2s ease;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 0 0 0.25rem 0;
+            color: #1e2a3e;
+            letter-spacing: -0.01em;
+        }
+
+        .sub {
+            color: #5b6e8c;
+            margin-bottom: 28px;
+            font-size: 0.95rem;
+            border-left: 3px solid #3b82f6;
+            padding-left: 12px;
+        }
+
+        .file-area {
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 24px;
+            padding: 24px 20px;
+            text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .file-area:hover {
+            background: #f1f5f9;
+            border-color: #3b82f6;
+        }
+
+        .file-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #ffffff;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 500;
+            color: #1e40af;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+            cursor: pointer;
+            transition: 0.1s linear;
+        }
+
+        .file-label:hover {
+            background: #eff6ff;
+            border-color: #3b82f6;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .filename {
+            margin-top: 16px;
+            font-size: 0.85rem;
+            color: #2c3e66;
+            word-break: break-all;
+            background: #ffffffcc;
+            padding: 6px 12px;
+            border-radius: 40px;
+            display: inline-block;
+        }
+
+        .progress-section {
+            margin: 24px 0 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background-color: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background-color: #3b82f6;
+            transition: width 0.2s;
+            border-radius: 10px;
+        }
+
+        .indeterminate {
+            width: 30%;
+            animation: pulse 1s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: translateX(-100%); width: 30%; }
+            100% { transform: translateX(400%); width: 30%; }
+        }
+
+        .status {
+            margin: 16px 0 12px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .status-icon {
+            font-size: 1.2rem;
+        }
+
+        .status-text {
+            font-weight: 500;
+        }
+
+        .info {
+            color: #2563eb;
+        }
+        .success {
+            color: #16a34a;
+        }
+        .danger {
+            color: #dc2626;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 28px;
+        }
+
+        button {
+            background: white;
+            border: 1px solid #cbd5e1;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #1f2937;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #f9fafb;
+        }
+
+        button.primary {
+            background: #1e3a8a;
+            border-color: #1e3a8a;
+            color: white;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        button.primary:hover {
+            background: #1e40af;
+            transform: translateY(-1px);
+        }
+
+        button.secondary:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        hr {
+            margin: 24px 0 12px;
+            border: none;
+            border-top: 1px solid #eef2f6;
+        }
+
+        .footer-note {
+            font-size: 0.75rem;
+            color: #6c7a91;
+            text-align: center;
+            margin-top: 24px;
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 20px;
+        }
+
+        .badge {
+            background: #eef2ff;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #1e3a8a;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>Конвертер Яндекс.Ключ → Aegis</h1>
+    <div class="sub">Экспорт из Яндекс.Ключ в формат <strong>aegis_import.txt</strong> — всё в вашем браузере, данные не покидают устройство</div>
+
+    <div class="file-area" id="fileDropZone">
+        <label class="file-label">
+            📂 Выбрать файл экспорта
+            <input type="file" id="fileInput" accept=".json,.txt,application/json,text/plain">
+        </label>
+        <div id="fileNameDisplay" class="filename"></div>
+        <div style="font-size:0.75rem; margin-top:12px; color:#4b5563;">Поддерживаются JSON-файлы, созданные Яндекс.Ключ (включая .txt)</div>
+    </div>
+
+    <div class="progress-section">
+        <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+        </div>
+    </div>
+
+    <div class="status">
+        <span class="status-icon" id="statusIcon">🟢</span>
+        <span class="status-text" id="statusText">Ожидание файла</span>
+    </div>
+
+    <div class="action-buttons">
+        <button id="convertBtn" class="primary" disabled>🔄 Конвертировать</button>
+        <button id="downloadBtn" class="secondary" disabled>💾 Скачать aegis_import.txt</button>
+    </div>
+
+    <hr>
+    <div class="footer-note">
+        🔒 100% локальная обработка · Никакой отправки данных · Исходный код доступен для проверки<br>
+        <span class="badge">otpauth://totp/ → построчный экспорт для Aegis</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // DOM elements
+        const fileInput = document.getElementById('fileInput');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const convertBtn = document.getElementById('convertBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const progressFill = document.getElementById('progressFill');
+        const statusIconSpan = document.getElementById('statusIcon');
+        const statusTextSpan = document.getElementById('statusText');
+        const dropZone = document.getElementById('fileDropZone');
+
+        // state
+        let currentFile = null;            // храним выбранный файл
+        let convertedBlob = null;           // готовый blob для скачивания
+        let convertedContent = null;         // строки конвертированного контента (для отладки)
+
+        // helpers
+        function setStatus(type, message) {
+            // type: 'info', 'success', 'danger'
+            let icon = '';
+            let colorClass = '';
+            if (type === 'info') {
+                icon = 'ℹ️';
+                colorClass = 'info';
+            } else if (type === 'success') {
+                icon = '✅';
+                colorClass = 'success';
+            } else if (type === 'danger') {
+                icon = '❌';
+                colorClass = 'danger';
+            } else {
+                icon = '🟢';
+                colorClass = 'info';
+            }
+            statusIconSpan.textContent = icon;
+            statusTextSpan.textContent = message;
+            statusTextSpan.className = `status-text ${colorClass}`;
+        }
+
+        function setIndeterminateProgress(active) {
+            if (active) {
+                // Запускаем анимацию неопределенного прогресса
+                progressFill.classList.add('indeterminate');
+                progressFill.style.width = '30%';
+            } else {
+                progressFill.classList.remove('indeterminate');
+                progressFill.style.width = '0%';
+            }
+        }
+
+        function resetUIAfterConversion() {
+            setIndeterminateProgress(false);
+            convertBtn.disabled = false;
+        }
+
+        function handleConvert() {
+            if (!currentFile) {
+                setStatus('danger', 'Файл не выбран. Пожалуйста, выберите экспорт Яндекс.Ключ.');
+                return;
+            }
+
+            setStatus('info', '⏳ Чтение и конвертация файла...');
+            setIndeterminateProgress(true);
+            convertBtn.disabled = true;
+            downloadBtn.disabled = true; // пока не будет готов результат
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const content = e.target.result;
+                    let jsonData;
+                    try {
+                        jsonData = JSON.parse(content);
+                    } catch (jsonErr) {
+                        throw new Error(`Файл не является корректным JSON: ${jsonErr.message}`);
+                    }
+
+                    if (!Array.isArray(jsonData)) {
+                        throw new Error('Ожидался массив записей в корне JSON (формат Яндекс.Ключ).');
+                    }
+
+                    const otpauthLines = [];
+
+                    for (const entry of jsonData) {
+                        if (entry && typeof entry === 'object') {
+                            const tech = entry.techInfo;
+                            if (typeof tech === 'string' && tech.startsWith('otpauth://totp/')) {
+                                otpauthLines.push(tech);
+                            }
+                        }
+                    }
+
+                    if (otpauthLines.length === 0) {
+                        throw new Error('Совместимых записей (otpauth://totp/...) не найдено. Убедитесь, что выбран правильный экспорт из Яндекс.Ключ.');
+                    }
+
+                    // Формируем контент для aegis_import.txt (каждая запись с новой строки)
+                    const outputText = otpauthLines.join('\n');
+                    convertedBlob = new Blob([outputText], { type: 'text/plain;charset=utf-8' });
+                    convertedContent = outputText;
+
+                    setStatus('success', `✅ Успех! Найдено и обработано ${otpauthLines.length} записей. Готово к скачиванию.`);
+                    setIndeterminateProgress(false);
+                    convertBtn.disabled = false;
+                    downloadBtn.disabled = false;  // включаем скачивание
+
+                } catch (err) {
+                    setStatus('danger', `❌ Ошибка: ${err.message}`);
+                    setIndeterminateProgress(false);
+                    convertBtn.disabled = false;
+                    downloadBtn.disabled = true;
+                    convertedBlob = null;
+                }
+            };
+
+            reader.onerror = function() {
+                setStatus('danger', 'Ошибка чтения файла. Попробуйте другой файл.');
+                setIndeterminateProgress(false);
+                convertBtn.disabled = false;
+                downloadBtn.disabled = true;
+                convertedBlob = null;
+            };
+
+            reader.readAsText(currentFile, 'UTF-8');
+        }
+
+        function handleDownload() {
+            if (!convertedBlob) {
+                setStatus('danger', 'Нет сконвертированных данных. Сначала выполните конвертацию.');
+                return;
+            }
+            // Создаем ссылку для скачивания с именем aegis_import.txt
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(convertedBlob);
+            link.href = url;
+            link.download = 'aegis_import.txt';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            setStatus('success', 'Файл aegis_import.txt скачан. Импортируйте его в приложение Aegis.');
+        }
+
+        // Обработка выбора файла
+        function onFileSelected(file) {
+            if (!file) {
+                currentFile = null;
+                fileNameDisplay.textContent = '';
+                convertBtn.disabled = true;
+                downloadBtn.disabled = true;
+                setStatus('info', 'Ожидание файла');
+                convertedBlob = null;
+                return;
+            }
+            currentFile = file;
+            fileNameDisplay.textContent = `📄 ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+            convertBtn.disabled = false;
+            downloadBtn.disabled = true;   // пока не конвертирован
+            setStatus('info', `Файл готов: "${file.name}". Нажмите «Конвертировать»`);
+            convertedBlob = null;
+        }
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            onFileSelected(file);
+        });
+
+        convertBtn.addEventListener('click', handleConvert);
+        downloadBtn.addEventListener('click', handleDownload);
+
+        // Drag & Drop support
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.background = '#eef2ff';
+            dropZone.style.borderColor = '#3b82f6';
+        });
+
+        dropZone.addEventListener('dragleave', (e) => {
+            dropZone.style.background = '#f8fafc';
+            dropZone.style.borderColor = '#cbd5e1';
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.background = '#f8fafc';
+            dropZone.style.borderColor = '#cbd5e1';
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                // обновляем input file для консистентности
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                fileInput.files = dataTransfer.files;
+                onFileSelected(file);
+            }
+        });
+
+        // Инициализация: все кнопки в начальном состоянии
+        setStatus('info', 'Выберите экспорт Яндекс.Ключ (JSON)');
+        convertBtn.disabled = true;
+        downloadBtn.disabled = true;
+        setIndeterminateProgress(false);
+    })();
+</script>
+</body>
+</html>

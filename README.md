@@ -9,7 +9,7 @@
 
 ## 🚀 Демо
  
-[Live Demo →](https://rostezkiy.github.io/yandex2aegis)
+[Live Demo →](https://rostezkiy.github.io/Yandex2Aegis/)
 
 ## 📦 Возможности
 
